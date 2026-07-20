@@ -1,11 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>将棋クラブ</title>
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <h1>h1</h1>
-  <p>hello world.</p>
+
+    <!-- ヘッダー部分 -->
+    <header>
+        <div class="header-title-area">
+            <h1 id="main-title">将棋クラブ</h1>
+            <p id="sub-title" class="sub-title"></p>
+        </div>
+        <nav>
+            <button onclick="scrollToSection('notices-section')">お知らせ</button>
+            <button onclick="scrollToSection('blogs-section')">ブログ</button>
+            <button onclick="scrollToSection('calendar-section')">月間予定</button>
+            <button onclick="scrollToSection('about-section')">クラブ概要</button>
+            <button onclick="scrollToSection('contact-section')">連絡先</button>
+        </nav>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="container">
+        <section id="first-section">
+            <h2></h2>
+        </section>
+        <!-- お知らせセクション -->
+        <section id="notices-section">
+            <h2>お知らせ</h2>
+            <div id="notices-container"></div>
+            <div id="notices-pagination"></div>
+        </section>
+
+        <!-- ブログセクション -->
+        <section id="blogs-section">
+            <h2>ブログ</h2>
+            <div id="blog-content-view" class="hidden"></div> <!-- 単独HTML等の詳細表示用 -->
+            <div id="blogs-container"></div>
+            <div id="blogs-pagination"></div>
+        </section>
+
+        <!-- 月間予定セクション -->
+        <section id="calendar-section">
+            <h2>月間予定</h2>
+            <div class="calendar-wrapper">
+                <!-- Googleカレンダーの埋め込み（src属性は実際のURLに変更してください） -->
+                <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Asia%2FTokyo&showPrint=0&showCalendars=0&showTz=0&src=c2hvZ2kucGFydHlAZ21haWwuY29t&src=amEuamFwYW5lc2UjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23039be5&color=%230b8043" style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+            </div>
+        </section>
+
+        <!-- クラブ概要セクション -->
+        <section id="about-section">
+            <h2>クラブ概要</h2>
+            <div id="about-content" class="flex-content"></div>
+        </section>
+
+        <!-- 連絡先セクション -->
+        <section id="contact-section">
+            <h2>連絡先</h2>
+            <div id="contact-content"></div>
+        </section>
+
+    </main>
+
+    <!-- データファイルと制御スクリプトの読み込み -->
+    <script src="assets/contact.js"></script>
+    <script src="assets/notices.js"></script>
+    <script src="assets/blogs.js"></script>
+    <script src="assets/script.js"></script>
 </body>
 </html>
