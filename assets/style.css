@@ -101,6 +101,17 @@ main {
     padding: 15px;
 }
 
+/* bodyに blog-active がついている時だけ、サブタイトルとナビを非表示にする */
+body.blog-active header nav,
+body.blog-active .sub-title {
+    display: none !important;
+}
+
+/* タイトルエリアの余白調整（ナビが消えた分、中央寄りに） */
+body.blog-active .header-title-area {
+    margin-bottom: 0;
+}
+
 /* ブログ特有のスタイル */
 .blog-flex {
     display: flex;
@@ -131,14 +142,15 @@ main {
 }
 
 .blog-view-close {
-    background-color: #444;
-    color: white;
+    background: #333;           /* ナビボタンと同じ色 */
+    color: #fff;               /* ナビボタンと同じ文字色 */
     border: none;
-    padding: 10px 20px;
+    padding: 8px 16px;          /* ナビボタンと同じパディング */
     cursor: pointer;
-    border-radius: 5px;
+    font-size: 0.9rem;          /* ナビボタンと同じサイズ */
+    border-radius: 4px;         /* ナビボタンと同じ角丸 */
+    transition: background 0.2s;
     font-weight: bold;
-    z-index: 10; /* 前面に配置 */
 }
 
 /* ブログ詳細表示全体のコンテナ */
@@ -173,7 +185,7 @@ main {
 }
 
 .blog-view-close:hover {
-    background-color: #c0392b;
+    background: #555;           /* ナビボタンのホバー色と同じ */
 }
 
 /* 詳細表示ボックスから不要なマージンを削除 */

@@ -212,15 +212,15 @@ function handleBlogClick(blog, index) {
 
     if (blog.link && blog.link.trim() !== '') {
         mainContainer.classList.add('hidden');
-
-        // 1. ボディ自体のスクロールを禁止する（ブラウザのスクロールバーを消す）
         document.body.style.overflow = 'hidden';
 
+        // 【追加】ヘッダーを簡略化するためにbodyにクラスを付与
+        document.body.classList.add('blog-active');
+
+        // 【重要】クラス付与後（ナビボタンが消えた後）に高さを取得する
         const header = document.querySelector('header');
         const headerHeight = header ? header.offsetHeight : 0;
         
-        // 余白計算をシンプルに。高さはCSS側で calc(100vh - ...) を使うため、
-        // JSではヘッダーの高さだけをカスタムプロパティとして渡します。
         document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
         viewBox.style.marginTop = `${headerHeight}px`;
 
@@ -230,7 +230,7 @@ function handleBlogClick(blog, index) {
                     <button class="blog-view-close" onclick="closeBlogView()">✕ ブログを閉じて戻る</button>
                 </div>
                 <div class="blog-view-box">
-                    <h3>${blog.title}</h3>
+                    <h3 style="margin-bottom: 10px;">${blog.title}</h3>
                     <div class="item-date" style="margin-bottom:10px;">${blog.date}</div>
                     <iframe src="${blog.link}" 
                             class="blog-iframe"
@@ -265,9 +265,10 @@ function closeBlogView() {
     viewBox.classList.add('hidden');
     viewBox.innerHTML = '';
     
-    // 2. ボディのスクロール禁止を解除する（ブラウザのスクロールバーを復活させる）
-    document.body.style.overflow = 'auto';
+    // 【追加】ヘッダーを元に戻すためにクラスを削除
+    document.body.classList.remove('blog-active');
     
+    document.body.style.overflow = 'auto';
     mainContainer.classList.remove('hidden');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
