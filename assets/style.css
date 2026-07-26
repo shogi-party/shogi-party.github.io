@@ -138,6 +138,51 @@ main {
     margin-top: 15px;
     border-radius: 3px;
 }
+/* ブログ詳細表示全体のコンテナ */
+.blog-full-view-container {
+    background: #f9f9f9;
+    padding: 20px; /* 上下左右に余裕を持たせる */
+    border-bottom: 2px solid #ddd;
+    min-height: 100vh; /* 画面いっぱいに背景色を広げる */
+}
+
+/* 閉じるボタンのツールバーをより明確に */
+.blog-view-toolbar {
+    display: flex;
+    justify-content: center; /* 中央寄せに変更（またはflex-end） */
+    margin-bottom: 20px;
+}
+
+.blog-view-close {
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.blog-view-close:hover {
+    background-color: #c0392b;
+}
+
+/* 詳細表示ボックスの最大幅を制限して中央寄せにする */
+.blog-view-box {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* iframe のスタイル調整 */
+.blog-view-box iframe {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: block;
+    margin: 0 auto;
+}
+
+
 
 /* カレンダー */
 .calendar-wrapper {

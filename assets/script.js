@@ -12,9 +12,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // スムーズスクロール制御
 function scrollToSection(id) {
+    const viewBox = document.getElementById('blog-content-view');
+    if (!viewBox.classList.contains('hidden')) {
+        closeBlogView();
+    }
+
     const element = document.getElementById(id);
     if (element) {
-        const offset = 120; // ヘッダーの高さ分のマージン
+        // 【修正ポイント】固定値ではなく、現在のヘッダーの実際の高さを取得する
+        const header = document.querySelector('header');
+        const headerHeight = header ? header.offsetHeight : 0;
+        const offset = headerHeight + 20; // ヘッダー高さに少し余裕（20px）を持たせる
+
         const bodyRect = document.body.getBoundingClientRect().top;
         const elementRect = element.getBoundingClientRect().top;
         const elementPosition = elementRect - bodyRect;
@@ -196,35 +205,52 @@ function renderBlogs() {
     }
 }
 
+// --- ブログクリック処理の修正 ---
 function handleBlogClick(blog, index) {
     const viewBox = document.getElementById('blog-content-view');
+    const mainContainer = document.querySelector('.container'); // メインコンテンツ取得
 
     if (blog.link && blog.link.trim() !== '') {
-        // 単独のHTMLファイルがある場合の処理（変更なし）
+        // 1. メインコンテンツを非表示にする
+        mainContainer.classList.add('hidden');
+
+        // 2. ヘッダーの高さを取得して、詳細ビューの上端に適用する
+        const header = document.querySelector('header');
+        const headerHeight = header ? header.offsetHeight : 0;
+        
+        // 詳細表示エリアのスタイルを調整（ヘッダーと重ならないように）
+        viewBox.style.marginTop = `${headerHeight}px`;
+
+        // 3. HTML構造の生成
+        // iframeの高さをあえて大きく(例: 2000px)設定し、内部スクロールを極力減らす
         viewBox.innerHTML = `
-            <div class="blog-view-box">
-                <h3>${blog.title}</h3>
-                <div class="item-date" style="margin-bottom:10px;">${blog.date}</div>
-                <iframe src="${blog.link}" width="100%" height="500" frameborder="0" style="border:1px solid #ccc; background:#fff;"></iframe>
-                <button class="blog-view-close" onclick="closeBlogView()">閉じる</button>
+            <div class="blog-full-view-container">
+                <div class="blog-view-toolbar">
+                    <button class="blog-view-close" onclick="closeBlogView()">✕ ブログを閉じて戻る</button>
+                </div>
+                <div class="blog-view-box">
+                    <h3>${blog.title}</h3>
+                    <div class="item-date" style="margin-bottom:10px;">${blog.date}</div>
+                    <iframe src="${blog.link}" width="100%" height="2000" frameborder="0" style="border:1px solid #ccc; background:#fff;"></iframe>
+                </div>
+                <div class="blog-view-toolbar">
+                    <button class="blog-view-close" onclick="closeBlogView()">✕ ブログを閉じて戻る</button>
+                </div>
             </div>
         `;
         viewBox.classList.remove('hidden');
-        scrollToSection('blog-content-view');
+        
+        // ページ最上部へ移動
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-        // 【ここを修正】アコーディオン展開時の処理
+        // アコーディオン展開の処理 (変更なし)
         const detail = document.getElementById(`blog-detail-${index}`);
         if (detail) {
-            // 1. 詳細部分の表示/非表示を切り替える
             const isHidden = detail.classList.toggle('hidden');
-            
-            // 2. 親要素（item）の中から「概要テキスト」だけを探して、詳細とは逆の状態にする
-            // detailの兄弟要素である .blog-summary-wrapper の中から探します
             const summaryWrapper = detail.previousElementSibling;
             if (summaryWrapper) {
                 const summaryTextElement = summaryWrapper.querySelector('.blog-summary-text');
                 if (summaryTextElement) {
-                    // 詳細が表示された(isHidden=false)なら、概要を隠す(hidden=true)
                     summaryTextElement.classList.toggle('hidden', !isHidden);
                 }
             }
@@ -232,46 +258,16 @@ function handleBlogClick(blog, index) {
     }
 }
 
-function handleBlogClick(blog, index) {
-    const viewBox = document.getElementById('blog-content-view');
-
-    if (blog.link && blog.link.trim() !== '') {
-        // 単独のHTMLファイルがある場合の処理（変更なし）
-        viewBox.innerHTML = `
-            <div class="blog-view-box">
-                <h3>${blog.title}</h3>
-                <div class="item-date" style="margin-bottom:10px;">${blog.date}</div>
-                <iframe src="${blog.link}" width="100%" height="500" frameborder="0" style="border:1px solid #ccc; background:#fff;"></iframe>
-                <button class="blog-view-close" onclick="closeBlogView()">閉じる</button>
-            </div>
-        `;
-        viewBox.classList.remove('hidden');
-        scrollToSection('blog-content-view');
-    } else {
-        // 【ここを修正】アコーディオン展開時の処理
-        const detail = document.getElementById(`blog-detail-${index}`);
-        if (detail) {
-            // 1. 詳細部分の表示/非表示を切り替える
-            const isHidden = detail.classList.toggle('hidden');
-            
-            // 2. 親要素（item）の中から「概要テキスト」だけを探して、詳細とは逆の状態にする
-            // detailの兄弟要素である .blog-summary-wrapper の中から探します
-            const summaryWrapper = detail.previousElementSibling;
-            if (summaryWrapper) {
-                const summaryTextElement = summaryWrapper.querySelector('.blog-summary-text');
-                if (summaryTextElement) {
-                    // 詳細が表示された(isHidden=false)なら、概要を隠す(hidden=true)
-                    summaryTextElement.classList.toggle('hidden', !isHidden);
-                }
-            }
-        }
-    }
-}
-
-
+// --- 閉じる処理の修正 ---
 function closeBlogView() {
     const viewBox = document.getElementById('blog-content-view');
+    const mainContainer = document.querySelector('.container');
+
     viewBox.classList.add('hidden');
     viewBox.innerHTML = '';
-    scrollToSection('blogs-section');
+    
+    // メインコンテンツを再表示する
+    mainContainer.classList.remove('hidden');
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
