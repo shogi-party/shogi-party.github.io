@@ -208,21 +208,22 @@ function renderBlogs() {
 // --- ブログクリック処理の修正 ---
 function handleBlogClick(blog, index) {
     const viewBox = document.getElementById('blog-content-view');
-    const mainContainer = document.querySelector('.container'); // メインコンテンツ取得
+    const mainContainer = document.querySelector('.container');
 
     if (blog.link && blog.link.trim() !== '') {
-        // 1. メインコンテンツを非表示にする
         mainContainer.classList.add('hidden');
 
-        // 2. ヘッダーの高さを取得して、詳細ビューの上端に適用する
+        // 1. ボディ自体のスクロールを禁止する（ブラウザのスクロールバーを消す）
+        document.body.style.overflow = 'hidden';
+
         const header = document.querySelector('header');
         const headerHeight = header ? header.offsetHeight : 0;
         
-        // 詳細表示エリアのスタイルを調整（ヘッダーと重ならないように）
+        // 余白計算をシンプルに。高さはCSS側で calc(100vh - ...) を使うため、
+        // JSではヘッダーの高さだけをカスタムプロパティとして渡します。
+        document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
         viewBox.style.marginTop = `${headerHeight}px`;
 
-        // 3. HTML構造の生成
-        // iframeの高さをあえて大きく(例: 2000px)設定し、内部スクロールを極力減らす
         viewBox.innerHTML = `
             <div class="blog-full-view-container">
                 <div class="blog-view-toolbar">
@@ -231,16 +232,14 @@ function handleBlogClick(blog, index) {
                 <div class="blog-view-box">
                     <h3>${blog.title}</h3>
                     <div class="item-date" style="margin-bottom:10px;">${blog.date}</div>
-                    <iframe src="${blog.link}" width="100%" height="2000" frameborder="0" style="border:1px solid #ccc; background:#fff;"></iframe>
-                </div>
-                <div class="blog-view-toolbar">
-                    <button class="blog-view-close" onclick="closeBlogView()">✕ ブログを閉じて戻る</button>
+                    <iframe src="${blog.link}" 
+                            class="blog-iframe"
+                            frameborder="0" 
+                            style="border:1px solid #ccc; background:#fff;"></iframe>
                 </div>
             </div>
         `;
         viewBox.classList.remove('hidden');
-        
-        // ページ最上部へ移動
         window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
         // アコーディオン展開の処理 (変更なし)
@@ -266,8 +265,9 @@ function closeBlogView() {
     viewBox.classList.add('hidden');
     viewBox.innerHTML = '';
     
-    // メインコンテンツを再表示する
-    mainContainer.classList.remove('hidden');
+    // 2. ボディのスクロール禁止を解除する（ブラウザのスクロールバーを復活させる）
+    document.body.style.overflow = 'auto';
     
+    mainContainer.classList.remove('hidden');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
