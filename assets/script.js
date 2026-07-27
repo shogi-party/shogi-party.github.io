@@ -205,7 +205,6 @@ function renderBlogs() {
     }
 }
 
-// --- ブログクリック処理の修正 ---
 function handleBlogClick(blog, index) {
     const viewBox = document.getElementById('blog-content-view');
     const mainContainer = document.querySelector('.container');
@@ -214,15 +213,11 @@ function handleBlogClick(blog, index) {
         mainContainer.classList.add('hidden');
         document.body.style.overflow = 'hidden';
 
-        // 【追加】ヘッダーを簡略化するためにbodyにクラスを付与
+        // ヘッダーを非表示にするためのクラスを付与
         document.body.classList.add('blog-active');
 
-        // 【重要】クラス付与後（ナビボタンが消えた後）に高さを取得する
-        const header = document.querySelector('header');
-        const headerHeight = header ? header.offsetHeight : 0;
-        
-        document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
-        viewBox.style.marginTop = `${headerHeight}px`;
+        // 【変更】ヘッダー高さの計算とmarginTopの設定を削除し、0にする
+        viewBox.style.marginTop = `0px`;
 
         viewBox.innerHTML = `
             <div class="blog-full-view-container">
@@ -256,6 +251,7 @@ function handleBlogClick(blog, index) {
         }
     }
 }
+
 
 // --- 閉じる処理の修正 ---
 function closeBlogView() {

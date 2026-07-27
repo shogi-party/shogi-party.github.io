@@ -102,8 +102,7 @@ main {
 }
 
 /* bodyに blog-active がついている時だけ、サブタイトルとナビを非表示にする */
-body.blog-active header nav,
-body.blog-active .sub-title {
+body.blog-active header {
     display: none !important;
 }
 
@@ -145,7 +144,7 @@ body.blog-active .header-title-area {
     background: #333;           /* ナビボタンと同じ色 */
     color: #fff;               /* ナビボタンと同じ文字色 */
     border: none;
-    padding: 8px 16px;          /* ナビボタンと同じパディング */
+    padding: 8px 12px;          /* ナビボタンと同じパディング */
     cursor: pointer;
     font-size: 0.9rem;          /* ナビボタンと同じサイズ */
     border-radius: 4px;         /* ナビボタンと同じ角丸 */
@@ -156,10 +155,10 @@ body.blog-active .header-title-area {
 /* ブログ詳細表示全体のコンテナ */
 .blog-full-view-container {
     background: #f9f9f9;
-    padding: 10px 20px;
+    padding: 20px;              /* 余白を調整 */
     border-bottom: 2px solid #ddd;
-    /* コンテナ自体の高さも画面ぴったりに固定し、はみ出しを防ぐ */
-    height: calc(100vh - var(--header-height, 120px)); 
+    /* ヘッダーが消えるため、高さは単純に100vhにする */
+    height: 100vh; 
     display: flex;
     flex-direction: column;
 }
@@ -167,22 +166,13 @@ body.blog-active .header-title-area {
 /* ツールバーの余白を固定し、計算を安定させる */
 .blog-view-toolbar {
     display: flex;
-    justify-content: center;
-    height: 50px; /* 固定値にする */
+    justify-content: flex-start;
+    align-items: center;
+    height: 50px;
     margin-bottom: 10px;
-    flex-shrink: 0; /* つぶれないように固定 */
+    flex-shrink: 0;
 }
 
-.blog-view-close {
-    background-color: #444;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: background 0.3s;
-}
 
 .blog-view-close:hover {
     background: #555;           /* ナビボタンのホバー色と同じ */
@@ -206,8 +196,8 @@ body.blog-active .header-title-area {
 
 .blog-iframe {
     width: 100%;
-    /* 計算式：画面高さ - ヘッダー - ツールバー(50px) - 余白・タイトル分(約80px) */
-    height: calc(100vh - var(--header-height, 120px) - 130px) !important;
+    /* 計算式：画面高さ - ツールバー(50px) - 余白・タイトル分(約130px) */
+    height: calc(100vh - 180px) !important; 
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     display: block;
 }
