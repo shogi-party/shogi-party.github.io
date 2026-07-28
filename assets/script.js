@@ -212,20 +212,16 @@ function handleBlogClick(blog, index) {
     if (blog.link && blog.link.trim() !== '') {
         mainContainer.classList.add('hidden');
         document.body.style.overflow = 'hidden';
-
-        // ヘッダーを非表示にするためのクラスを付与
         document.body.classList.add('blog-active');
-
-        // 【変更】ヘッダー高さの計算とmarginTopの設定を削除し、0にする
         viewBox.style.marginTop = `0px`;
 
         viewBox.innerHTML = `
             <div class="blog-full-view-container">
-                <div class="blog-view-toolbar">
-                    <button class="blog-view-close" onclick="closeBlogView()">✕ ブログを閉じて戻る</button>
-                </div>
                 <div class="blog-view-box">
-                    <h3 style="margin-bottom: 10px;">${blog.title}</h3>
+                    <div class="blog-title-row">
+                        <h3 style="margin-bottom: 10px;">${blog.title}</h3>
+                        <button class="blog-view-close" onclick="closeBlogView()">✕ 閉じる</button>
+                    </div>
                     <div class="item-date" style="margin-bottom:10px;">${blog.date}</div>
                     <iframe src="${blog.link}" 
                             class="blog-iframe"
@@ -237,7 +233,7 @@ function handleBlogClick(blog, index) {
         viewBox.classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-        // アコーディオン展開の処理 (変更なし)
+        // アコーディオン展開の処理
         const detail = document.getElementById(`blog-detail-${index}`);
         if (detail) {
             const isHidden = detail.classList.toggle('hidden');
@@ -251,6 +247,7 @@ function handleBlogClick(blog, index) {
         }
     }
 }
+
 
 
 // --- 閉じる処理の修正 ---
