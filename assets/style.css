@@ -111,19 +111,42 @@ body.blog-active .header-title-area {
     margin-bottom: 0;
 }
 
-/* タイトルとボタンを横並びにするための設定 */
 .blog-title-row {
     display: flex;
-    justify-content: space-between; /* 両端に寄せる */
-    align-items: center;           /* 上下中央揃え */
-    gap: 20px;                     /* タイトルが長い時にボタンとくっつかないように隙間を作る */
+    justify-content: space-between; 
+    align-items: center;           
+    gap: 15px;                     
     margin-bottom: 10px;
+    flex-wrap: wrap; /* ★幅が足りない時に折り返しを許可する */
 }
 
-/* h3のデフォルトのマージンを調整（Flex内で崩れないように） */
 .blog-title-row h3 {
-    margin: 0 !important; /* インラインスタイルで指定されているため、念のためリセットまたは調整 */
-    margin-bottom: 10px !important; /* ユーザー指定のスタイルを維持 */
+    margin: 0 !important; 
+    margin-bottom: 0 !important; /* Flexの中なので下マージンは不要に */
+    flex: 1;           /* ★可能な限り幅を取る */
+    min-width: 0;      /* ★重要：長い英単語などがあっても親を突き破らないようにする */
+    word-wrap: break-word; /* 長いタイトルを自動で改行させる */
+}
+
+/* --- スマートフォン向け調整 (768px以下) --- */
+@media (max-width: 768px) {
+    .blog-title-row {
+        /* ★スマホでは方向を「縦」に変更し、さらにボタンを上に持ってくる */
+        flex-direction: column-reverse; 
+        align-items: flex-end; /* ボタンとタイトルを右寄せにする（お好みで left に変更可） */
+    }
+
+    .blog-title-row h3 {
+        width: 100%;
+        text-align: left; /* タイトル自体は左寄せに */
+        margin-bottom: 10px !important; /* ボタンとの間に隙間を作る */
+    }
+
+    .blog-view-close {
+        width: auto;
+        margin-bottom: 5px;
+        /* スマホでは文字を少し短くしても良いかもしれません（JS側で変更可能） */
+    }
 }
 
 /* ブログ特有のスタイル */
