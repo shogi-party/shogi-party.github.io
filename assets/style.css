@@ -114,38 +114,28 @@ body.blog-active .header-title-area {
 .blog-title-row {
     display: flex;
     justify-content: space-between; 
-    align-items: center;           
-    gap: 15px;                     
+    align-items: flex-start; /* タイトルが複数行になってもボタンは上に固定 */
+    gap: 15px;               
     margin-bottom: 10px;
-    flex-wrap: wrap; /* ★幅が足りない時に折り返しを許可する */
 }
 
 .blog-title-row h3 {
     margin: 0 !important; 
-    margin-bottom: 0 !important; /* Flexの中なので下マージンは不要に */
-    flex: 1;           /* ★可能な限り幅を取る */
-    min-width: 0;      /* ★重要：長い英単語などがあっても親を突き破らないようにする */
-    word-wrap: break-word; /* 長いタイトルを自動で改行させる */
+    flex: 1;                /* ★ 利用可能なスペースをすべて使う */
+    min-width: 0;           /* ★ 重要：これが無いと長い単語がある時に幅を突き破る */
+    word-wrap: break-word;  /* 長いタイトルを自動で折り返す */
+    overflow-wrap: break-word;
+    line-height: 1.4;       /* 折り返した時の行間を調整 */
 }
 
 /* --- スマートフォン向け調整 (768px以下) --- */
 @media (max-width: 768px) {
     .blog-title-row {
-        /* ★スマホでは方向を「縦」に変更し、さらにボタンを上に持ってくる */
-        flex-direction: column-reverse; 
-        align-items: flex-end; /* ボタンとタイトルを右寄せにする（お好みで left に変更可） */
+        gap: 10px; /* スマホでは隙間を少し狭くする */
     }
-
-    .blog-title-row h3 {
-        width: 100%;
-        text-align: left; /* タイトル自体は左寄せに */
-        margin-bottom: 10px !important; /* ボタンとの間に隙間を作る */
-    }
-
     .blog-view-close {
-        width: auto;
-        margin-bottom: 5px;
-        /* スマホでは文字を少し短くしても良いかもしれません（JS側で変更可能） */
+        padding: 6px 10px; /* ボタンを少しコンパクトにする */
+        font-size: 0.8rem;
     }
 }
 
@@ -179,13 +169,15 @@ body.blog-active .header-title-area {
 }
 
 .blog-view-close {
-    background: #333;           /* ナビボタンと同じ色 */
-    color: #fff;               /* ナビボタンと同じ文字色 */
+    flex-shrink: 0;         /* ★ 重要：ボタンが絶対に縮まないようにし、画面外に出るのを防ぐ */
+    white-space: nowrap;     /* ボタン内の文字（✕ 閉じる）を絶対に改行させない */
+    background: #333;
+    color: #fff;
     border: none;
-    padding: 8px 12px;          /* ナビボタンと同じパディング */
+    padding: 8px 12px;
     cursor: pointer;
-    font-size: 0.9rem;          /* ナビボタンと同じサイズ */
-    border-radius: 4px;         /* ナビボタンと同じ角丸 */
+    font-size: 0.9rem;
+    border-radius: 4px;
     transition: background 0.2s;
     font-weight: bold;
 }
