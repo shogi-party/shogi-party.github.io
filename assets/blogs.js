@@ -1,5 +1,14 @@
 const blogsData = [
     {
+        date: "2026/08/08",
+        title: "駒を磨く",
+        content: "たまにやると楽しい、駒を洗ったときの話。",
+        images: [
+            { src: "assets/images/20260802komamigaki.jpg", alt: "駒を磨く" }
+        ],
+        link: "assets/blogs/20260808komamigaki.html"
+    },
+    {
         date: "2026/07/26",
         title: "第44回有田陶器市将棋大会　出場記",
         content: "2026年GWに開催された「有田陶器市将棋大会」のようすを紹介します。",
